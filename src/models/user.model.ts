@@ -34,9 +34,8 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      required: [true, 'Please provide a password'],
-      minlength: 8,
-      select: false,
+      required: true,
+      minlength: 6,
     },
     passwordChangedAt: { type: Date },
     socketId: { type: String },
@@ -49,6 +48,9 @@ const userSchema = new Schema(
     status: {
       type: String,
       enum: ['online', 'offline'],
+    },
+    lastOnline: {
+      type: Date,
     },
   },
   {
@@ -82,6 +84,7 @@ userSchema.methods.comparePassword = async function (
 
 // Types
 export type TUserInput = InferSchemaType<typeof userSchema>;
+
 export interface IUserDocument extends TUserInput, Document {
   fullName: string;
   comparePassword: (
@@ -94,7 +97,7 @@ export interface IUserDocument extends TUserInput, Document {
 interface IUserModel extends Model<IUserDocument> {}
 
 // Export Model
-export const UserModel = mongoose.model<IUserDocument, IUserModel>(
+export const User = mongoose.model<IUserDocument, IUserModel>(
   'User',
   userSchema
 );
