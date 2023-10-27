@@ -1,4 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
+import { createUser } from '../services/user.service';
+import { TUserInput } from '../models/user.model';
 
 export const loginHandler = async (
   req: Request,
@@ -25,22 +27,23 @@ export const loginHandler = async (
 };
 
 export const registerHandler = async (
-  req: Request,
+  req: Request<{}, {}, TUserInput>,
   res: Response,
   next: NextFunction
 ) => {
-  const { username, email } = req.body;
+  const userInput = req.body;
+  const { firstName, lastName, email, password } = userInput;
 
-  if (!username || !email) {
-    return res.send({
-      message: 'Username and email is required',
+  if (!firstName || !lastName || !email || !password) {
+    return res.status(400).json({
+      message: 'Missing required fields: firstName, lastName, email, password',
     });
   }
 
-  const user = {
-    username,
-    email,
-  };
-
-  res.json({ message: 'OK', user });
+  try {
+    const user = await createUser(userInput);
+    return res.json({ message: 'OK', user });
+  } catch (error) {
+    return res.sendStatus(500);
+  }
 };
