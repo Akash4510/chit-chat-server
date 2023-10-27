@@ -5,6 +5,7 @@ import rateLimit from 'express-rate-limit';
 
 import router from './routes';
 import { logger } from './utils/logger';
+import { connectDb } from './utils/db';
 
 const app = express();
 
@@ -27,4 +28,6 @@ const port = process.env.PORT || 8080;
 
 app.listen(port, async () => {
   logger.info(`Server running on http://localhost:${port}`);
+
+  await connectDb();
 });

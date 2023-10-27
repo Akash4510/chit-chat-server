@@ -30,7 +30,6 @@
     "@types/jsonwebtoken": "^9.0.3",
     "@types/lodash": "^4.14.199",
     "@types/node": "^20.8.6",
-    "@types/pino": "^7.0.5",
     "pino-pretty": "^10.2.3",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.2.2"
