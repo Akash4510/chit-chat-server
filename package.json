@@ -1,8 +1,8 @@
 {
-  "name": "whatsapp-clone-server",
+  "name": "chit-chat-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/app.ts",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts | npx pino-pretty"
   },
