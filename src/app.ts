@@ -2,6 +2,7 @@ import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
+import cookieParser from 'cookie-parser';
 
 import router from './routes';
 import { logger } from './utils/logger';
@@ -12,8 +13,14 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(cookieParser());
+
 app.use(helmet());
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+  })
+);
 app.use(
   rateLimit({
     max: 3000,

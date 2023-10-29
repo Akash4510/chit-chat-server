@@ -59,12 +59,12 @@ const userSchema = new Schema(
 );
 
 // Virtuals
-userSchema.virtual('fullName').get(function (this: IUserDocument) {
-  return this.firstName + this.lastName;
+userSchema.virtual('fullName').get(function (this: UserDocument) {
+  return this.firstName + ' ' + this.lastName;
 });
 
 // Document Middleware
-userSchema.pre<IUserDocument>('save', async function (next) {
+userSchema.pre<UserDocument>('save', async function (next) {
   if (!this.isModified('password')) return next();
 
   const salt = await bcrypt.genSalt(12);
@@ -83,9 +83,9 @@ userSchema.methods.comparePassword = async function (
 };
 
 // Types
-export type TUserInput = InferSchemaType<typeof userSchema>;
+export type UserInput = InferSchemaType<typeof userSchema>;
 
-export interface IUserDocument extends TUserInput, Document {
+export interface UserDocument extends UserInput, Document {
   fullName: string;
   comparePassword: (
     candidatePassword: string,
@@ -94,10 +94,10 @@ export interface IUserDocument extends TUserInput, Document {
   changedPasswordAfter: (JWTTimestamp: number) => boolean;
 }
 
-interface IUserModel extends Model<IUserDocument> {}
-
-// Export Model
-export const User = mongoose.model<IUserDocument, IUserModel>(
+// Create the model
+const User = mongoose.model<UserDocument, Model<UserDocument>>(
   'User',
   userSchema
 );
+
+export default User;

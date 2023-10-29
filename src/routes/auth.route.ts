@@ -1,9 +1,16 @@
 import { Router } from 'express';
-import { loginHandler, registerHandler } from '../controllers/auth.controller';
+import {
+  loginHandler,
+  logoutHandler,
+  registerHandler,
+} from '../controllers/auth.controller';
+import validateSchema from '../middlewares/validateSchema';
+import { loginSchema, registerSchema } from '../schema/auth.schema';
 
 const authRouter = Router();
 
-authRouter.post('/login', loginHandler);
-authRouter.post('/register', registerHandler);
+authRouter.post('/register', validateSchema(registerSchema), registerHandler);
+authRouter.post('/login', validateSchema(loginSchema), loginHandler);
+authRouter.get('/logout', logoutHandler);
 
 export { authRouter };
