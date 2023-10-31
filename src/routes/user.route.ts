@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import { requireUser } from '../middlewares/requireUser';
 import { getUserHandler } from '../controllers/user.controller';
 

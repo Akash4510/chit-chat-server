@@ -1,7 +1,7 @@
 import { Response, NextFunction } from 'express';
-import { RequestWithUser } from '../types';
 import { omit } from 'lodash';
-import { logger } from '../utils/logger';
+
+import { RequestWithUser } from '../types';
 
 export const getUserHandler = async (
   req: RequestWithUser,
@@ -11,8 +11,6 @@ export const getUserHandler = async (
   try {
     // Get the user from the request object
     const user = req.user;
-
-    logger.info(user, 'User from req object');
 
     // If user is not found, return an error
     if (!user) {

@@ -1,6 +1,6 @@
-import {} from 'express';
-import User, { UserInput, UserDocument } from '../models/user.model';
 import { FilterQuery, QueryOptions } from 'mongoose';
+
+import User, { UserInput, UserDocument } from '../models/user.model';
 
 export const createUser = async (userInput: UserInput) => {
   try {
@@ -13,7 +13,7 @@ export const createUser = async (userInput: UserInput) => {
 
 export const getUser = async (
   query: FilterQuery<UserDocument>,
-  options: QueryOptions = { lean: true }
+  options?: QueryOptions
 ) => {
   try {
     const user = await User.findOne(query, {}, options);
