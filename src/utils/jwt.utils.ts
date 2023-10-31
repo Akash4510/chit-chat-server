@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { privateKey, publicKey } from '../secret';
+import { logger } from './logger';
 
 export const signJWT = (
   object: Object,
@@ -20,9 +21,13 @@ export const verifyJWT = (token: string) => {
       decoded,
     };
   } catch (error: any) {
+    logger.error(error.message, 'JWT Verification Error');
     return {
-      valid: error.message !== 'jwt malformed',
-      expired: error.message === 'jwt expired',
+      valid: !(
+        error.message === 'jwt malformed' ||
+        error.message === 'invalid signature'
+      ),
+      expired: error instanceof jwt.TokenExpiredError,
       decoded: null,
     };
   }

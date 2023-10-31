@@ -16,7 +16,7 @@ export const getUser = async (
   options: QueryOptions = { lean: true }
 ) => {
   try {
-    const user = await User.find(query, {}, options);
+    const user = await User.findOne(query, {}, options);
     return user;
   } catch (error: any) {
     throw new Error(error);
