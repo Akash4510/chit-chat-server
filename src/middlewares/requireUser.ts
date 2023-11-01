@@ -18,6 +18,10 @@ export const requireUser = async (
     // If authorization header is not present or does not start with "Bearer "
     // (Because Bearer is the authentication scheme used by the JWT), return an error
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      logger.error(
+        'Authorization header not found or not in correct format - REQUIRE_USER_MIDDLEWARE'
+      );
+
       return res.status(401).json({
         status: 'error',
         message: 'Unauthorized',
@@ -32,9 +36,11 @@ export const requireUser = async (
 
     // If the token is not valid, return an error
     if (!valid) {
+      logger.error('Invalid access token - REQUIRE_USER_MIDDLEWARE');
+
       return res.status(401).json({
         status: 'error',
-        message: 'Unauthorized: Invalid access token',
+        message: 'Unauthorized',
       });
     }
 
@@ -47,6 +53,8 @@ export const requireUser = async (
 
       // If the user is not found, return an error
       if (!user) {
+        logger.error('User not found - REQUIRE_USER_MIDDLEWARE');
+
         return res.status(401).json({
           status: 'error',
           message: 'Unauthorized: User not found',
@@ -65,9 +73,11 @@ export const requireUser = async (
 
     // If the refresh token is not present, return an error
     if (!refreshToken) {
+      logger.error('Refresh token not found - REQUIRE_USER_MIDDLEWARE');
+
       return res.status(401).json({
         status: 'error',
-        message: 'Unauthorized: Refresh token not present',
+        message: 'Unauthorized',
       });
     }
 
@@ -80,17 +90,21 @@ export const requireUser = async (
 
     // If the refresh token is not valid, return an error
     if (!validRefreshToken) {
+      logger.error('Invalid refresh token - REQUIRE_USER_MIDDLEWARE');
+
       return res.status(401).json({
         status: 'error',
-        message: 'Unauthorized: Invalid refresh token',
+        message: 'Unauthorized',
       });
     }
 
     // If the refresh token is expired, return an error
     if (refreshTokenExpired) {
+      logger.error('Refresh token expired - REQUIRE_USER_MIDDLEWARE');
+
       return res.status(401).json({
         status: 'error',
-        message: 'Unauthorized: Refresh token expired',
+        message: 'Unauthorized: Please log in again',
       });
     }
 
@@ -106,7 +120,7 @@ export const requireUser = async (
       { expiresIn: accessTokenTtl }
     );
 
-    logger.info('Access token refreshed');
+    logger.info('Access token refreshed - REQUIRE_USER_MIDDLEWARE');
 
     // Set the new access token in the response header
     res.setHeader('New-Access-Token', newAccessToken);
@@ -116,6 +130,7 @@ export const requireUser = async (
 
     // If the user is not found, return an error
     if (!user) {
+      logger.error('User not found - REQUIRE_USER_MIDDLEWARE');
       return res.status(401).json({
         status: 'error',
         message: 'Unauthorized: User not found',
@@ -128,6 +143,8 @@ export const requireUser = async (
     // Proceed to the next middleware
     return next();
   } catch (error: any) {
+    logger.error(`${error.message} - REQUIRE_USER_MIDDLEWARE`);
+
     res.status(500).json({
       status: 'error',
       message: error.message,

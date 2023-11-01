@@ -81,9 +81,10 @@ export const loginHandler = async (
 
     // If password is invalid, return an error
     if (!isValidPassword) {
-      return res
-        .status(400)
-        .json({ status: 'error', message: 'Invalid password' });
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid password',
+      });
     }
 
     // Create access token and refresh token
@@ -128,6 +129,10 @@ export const logoutHandler = async (
     // Clear the refresh token cookie
     res.clearCookie('refreshToken');
 
+    // Set the access token to null
+    res.setHeader('Authorization', '');
+
+    // Return a success message
     return res.json({
       status: 'success',
       message: 'Logged out successfully',

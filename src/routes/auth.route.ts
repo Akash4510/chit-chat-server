@@ -11,6 +11,6 @@ const authRouter = Router();
 
 authRouter.post('/register', validateSchema(registerSchema), registerHandler);
 authRouter.post('/login', validateSchema(loginSchema), loginHandler);
-authRouter.get('/logout', logoutHandler);
+authRouter.post('/logout', logoutHandler);
 
-export { authRouter };
+export default authRouter;
