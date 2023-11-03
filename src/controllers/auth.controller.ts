@@ -127,7 +127,12 @@ export const logoutHandler = async (
 ) => {
   try {
     // Clear the refresh token cookie
-    res.clearCookie('refreshToken');
+    res.clearCookie('refreshToken', {
+      httpOnly: true, // So that the cookie cannot be accessed by the client side
+      secure: true, // So that the cookie can only be sent over https
+      sameSite: 'none', // So that the cookie can be sent to cross-site requests
+      maxAge: refreshTokenTtl * 1000, // Convert seconds to milliseconds
+    });
 
     // Set the access token to null
     res.setHeader('Authorization', '');

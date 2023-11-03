@@ -19,6 +19,9 @@ app.use(helmet());
 app.use(
   cors({
     credentials: true,
+    origin: 'http://localhost:5173',
+    // Need to add this to allow the client to read the new access token from the response header otherwise this header will not be accessible in the client
+    exposedHeaders: ['New-Access-Token'],
   })
 );
 app.use(
