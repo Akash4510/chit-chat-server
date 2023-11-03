@@ -77,7 +77,7 @@ export const requireUser = async (
 
       return res.status(401).json({
         status: 'error',
-        message: 'Unauthorized',
+        message: 'Unauthorized: Please log in again',
       });
     }
 
